@@ -143,16 +143,18 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function(event) {
-    console.log("activate", this);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function(event) {
-    console.log("deactivate", this);
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function(event) {
-    console.log("over", event.target);
+    $(this).addClass("dropover-active");
   },
   out: function(event) {
-    console.log("out", event.target);
+    $(this).removeClass("dropover-active");
   },
   update: function(event) {
     var tempArr = [];
@@ -191,12 +193,13 @@ $("#trash").droppable({
   drop: function(event, ui) {
     console.log("drop");
     ui.draggable.remove();
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   over: function(event, ui) {
-    console.log("over");
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function(event, ui) {
-    console.log("out");
+    $(".bottom-trash").removeClass("bottom-trash-active");
   }
 });
 
@@ -269,5 +272,12 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
+
+setInterval(function () {
+  $(".card .list-group-item").each(function(index, el) {
+    auditTask(el);
+  });
+}, (1000 * 60) * 30);
+
 
 
